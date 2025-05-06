@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel - Minha Aplicação</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content {
+            flex: 1;
+        }
+
+        .welcome-banner {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+        }
+
+        footer {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body class="bg-light">
+<div class="container content mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="welcome-banner text-center">
+                <h1 class="mb-3">Olá, Usuário!</h1>
+                <p class="lead text-muted">Bem-vindo ao painel da sua aplicação. Aproveite a experiência!</p>
+                <a href="/logout" class="btn btn-outline-danger mt-4">Sair</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="text-center py-4 mt-auto">
+    <p class="mb-0 text-muted">&copy; 2025 Minha Aplicação. Todos os direitos reservados.</p>
+</footer>
+</body>
+</html>
