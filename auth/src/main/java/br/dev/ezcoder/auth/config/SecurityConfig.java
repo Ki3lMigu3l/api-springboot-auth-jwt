@@ -1,7 +1,6 @@
 package br.dev.ezcoder.auth.config;
 
-import br.dev.ezcoder.auth.security.CustomUserDetailsService;
-import br.dev.ezcoder.auth.service.UsuarioService;
+import br.dev.ezcoder.auth.security.LoginSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -10,7 +9,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -21,12 +20,13 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain (HttpSecurity http, LoginSuccessHandler successHandler) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
-                .formLogin(c -> {
-                    c.loginPage("/login").permitAll();
+                .formLogin(l -> {
+                    l.loginPage("/login")
+                            .defaultSuccessUrl("/home");
                 })
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/login/**").permitAll();
@@ -34,16 +34,22 @@ public class SecurityConfig {
                     auth.requestMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN");
                     auth.anyRequest().authenticated();
                 })
+                .oauth2Login(oauth2 -> {
+                    oauth2
+                            .loginPage("/login")
+                            .defaultSuccessUrl("/home")
+                            .successHandler(successHandler);
+                })
                 .build();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService (UsuarioService service) {
-        return new CustomUserDetailsService(service);
     }
 
     @Bean
     public PasswordEncoder passwordEncoder () {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public GrantedAuthorityDefaults grantedAuthorityDefaults() {
+        return new GrantedAuthorityDefaults("");
     }
 }

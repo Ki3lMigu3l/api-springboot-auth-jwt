@@ -27,7 +27,12 @@ public class UsuarioService {
         return repository.findByUsername(username);
     }
 
+    public Usuario findByEmail(String email) {
+        return repository.findByEmail(email);
+    }
+
     public List<Usuario> getUsers() {
         return repository.findAll();
     }
+
 }

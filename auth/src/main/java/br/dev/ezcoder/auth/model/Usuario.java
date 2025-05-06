@@ -1,9 +1,7 @@
 package br.dev.ezcoder.auth.model;
 
-import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.Type;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,6 +17,9 @@ public class Usuario {
 
     @Column
     private String username;
+
+    @Column
+    private String email;
 
     @Column
     private String password;
